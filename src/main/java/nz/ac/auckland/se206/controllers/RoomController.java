@@ -1,8 +1,12 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -16,9 +20,48 @@ public class RoomController {
   @FXML private Rectangle window;
   @FXML private Rectangle vase;
 
+  @FXML private ImageView normalVase;
+  Image monsterVaseImage = new Image(getClass().getResourceAsStream("/images/monstervase.png"));
+  Image normalVaseImage = new Image(getClass().getResourceAsStream("/images/vase.png"));
+
+  @FXML private Label timerLabel;
+  private int remainingSeconds = COUNTDOWN_SECONDS;
+  private static final int COUNTDOWN_SECONDS = 120;
+
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
     // Initialization code goes here
+    Thread countdownThread =
+        new Thread(
+            () -> {
+              while (remainingSeconds > 0) {
+                Platform.runLater(() -> timerLabel.setText(formatTime(remainingSeconds)));
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                remainingSeconds--;
+              }
+              Platform.runLater(() -> timerLabel.setText("Time's up!"));
+            });
+
+    countdownThread.setDaemon(true);
+    countdownThread.start();
+  }
+
+  public void toMonsterVase() {
+    normalVase.setImage(monsterVaseImage);
+  }
+
+  public void resetVase() {
+    normalVase.setImage(normalVaseImage);
+  }
+
+  public String formatTime(int seconds) {
+    int minutes = seconds / 60;
+    int secs = seconds % 60;
+    return String.format("%02d:%02d", minutes, secs);
   }
 
   /**

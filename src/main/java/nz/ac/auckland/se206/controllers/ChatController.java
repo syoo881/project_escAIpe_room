@@ -29,6 +29,10 @@ public class ChatController {
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   @FXML
+
+  // The GPT model is initialized with a riddle prompt.
+  // It calls in the getRiddleWithGivenWord method from the GptPromptEngineering class.
+  // It is currently hard coded to use the word "vase" as the riddle word.
   public void initialize() throws ApiProxyException {
     chatCompletionRequest =
         new ChatCompletionRequest().setN(1).setTemperature(0.2).setTopP(0.5).setMaxTokens(100);
@@ -61,6 +65,8 @@ public class ChatController {
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       // TODO handle exception appropriately
+      //Add a popuperror message when no internet connection
+      //Maybe add like "Try again later"
       e.printStackTrace();
       return null;
     }

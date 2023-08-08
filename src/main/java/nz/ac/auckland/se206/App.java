@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -45,9 +46,10 @@ public class App extends Application {
   public void start(final Stage stage) throws IOException {
     Parent root = loadFxml("room");
     scene = new Scene(root, 600, 470);
+    Image icon = new Image("file:src/main/resources/images/imageIcon.png");
+    stage.getIcons().add(icon);
     stage.setScene(scene);
     stage.show();
     root.requestFocus();
   }
-
 }
