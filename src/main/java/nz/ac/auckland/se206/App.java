@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import nz.ac.auckland.se206.SceneManager.AppUi;
+import nz.ac.auckland.se206.controllers.ChatController;
 
 /**
  * This is the entry point of the JavaFX application, while you can change this class, it should
@@ -16,6 +17,15 @@ import nz.ac.auckland.se206.SceneManager.AppUi;
 public class App extends Application {
 
   private static Scene scene;
+
+  private static ChatController chatInstance;
+
+  public static ChatController getInstance() {
+    if (chatInstance == null) {
+      chatInstance = new ChatController();
+    }
+    return chatInstance;
+  }
 
   public static void main(final String[] args) {
     launch();

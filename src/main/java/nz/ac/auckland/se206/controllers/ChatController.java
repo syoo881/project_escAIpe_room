@@ -79,6 +79,15 @@ public class ChatController {
     gptThread.start();
   }
 
+  public ChatMessage getGptGeneratedPrompt() throws ApiProxyException {
+    ChatMessage prompt =
+        new ChatMessage(
+            "user",
+            "In 6 words or less, give clues about vases, bedrooms and frames, in random order."
+                + " Never say these words - just hints.");
+    return runGpt(prompt); // Modify runGpt method as needed
+  }
+
   /**
    * Runs the GPT model with a given chat message.
    *

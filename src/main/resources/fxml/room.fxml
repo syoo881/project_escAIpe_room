@@ -60,6 +60,11 @@
             <Font size="29.0" />
          </font>
       </TextArea>
-      <TextArea fx:id="frameSpeech" layoutX="212.0" layoutY="95.0" prefHeight="60.0" prefWidth="176.0" />
+      <Label fx:id="frameSpeech" alignment="CENTER" layoutX="50.0" layoutY="69.0" prefHeight="76.0" prefWidth="492.0" text="Help me Find my Friends!" textFill="WHITE" />
+      <ImageView fx:id="monsterBed" fitHeight="43.0" fitWidth="146.0" layoutX="171.0" layoutY="388.0" onMouseEntered="#toMonsterBed" onMouseExited="#resetBed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/empty.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
