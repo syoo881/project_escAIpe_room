@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,6 +21,9 @@
          <image>
             <Image url="@../images/vase.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
       <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="459.0" layoutY="14.0" prefHeight="43.0" prefWidth="101.0" text="Label">
          <font>
@@ -42,5 +46,13 @@
             </LinearGradient>
          </textFill>
       </Label>
+      <ImageView fx:id="monsterFrame" fitHeight="197.0" fitWidth="187.0" layoutX="198.0" layoutY="128.0" onMouseClicked="#clickMonsterFrame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/monsterFrame.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </Pane>

@@ -1,16 +1,17 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
-import nz.ac.auckland.se206.SceneManager;
 import nz.ac.auckland.se206.SceneManager.AppUi;
+import nz.ac.auckland.se206.UiUtils;
 import nz.ac.auckland.se206.gpt.ChatMessage;
 import nz.ac.auckland.se206.gpt.GptPromptEngineering;
 import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
@@ -25,6 +26,22 @@ public class ChatController {
   @FXML private Button sendButton;
 
   private ChatCompletionRequest chatCompletionRequest;
+
+  private static boolean isMonsterVaseRiddle = false;
+  private boolean isMonsterBedRiddle = false;
+
+  // ... (other methods and initializations)
+
+  public static void startMonsterVaseRiddle() {
+    isMonsterVaseRiddle = true;
+    UiUtils.showDialog(
+        "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
+    App.setScene(AppUi.CHAT);
+  }
+
+  public void startMonsterBedRiddle() {
+    isMonsterBedRiddle = true;
+  }
 
   /**
    * Initializes the chat view, loading the riddle.
@@ -41,9 +58,25 @@ public class ChatController {
     // here, I think we put an if statement to decide what riddlewithGivenWord we give through to
     // GPT
     // Based off what the user clicked.
-    chatCompletionRequest =
-        new ChatCompletionRequest().setN(1).setTemperature(0.2).setTopP(0.5).setMaxTokens(100);
-    runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
+    // USe threading here. Put these in background tasks.
+
+    Task<Void> gptTask =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            chatCompletionRequest =
+                new ChatCompletionRequest()
+                    .setN(1)
+                    .setTemperature(0.2)
+                    .setTopP(0.5)
+                    .setMaxTokens(100);
+            runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
+            return null;
+          }
+        };
+    Thread gptThread = new Thread(gptTask);
+    gptThread.start();
   }
 
   /**
@@ -95,10 +128,29 @@ public class ChatController {
     inputText.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
-    ChatMessage lastMsg = runGpt(msg);
-    if (lastMsg.getRole().equals("assistant") && lastMsg.getContent().startsWith("Correct")) {
-      GameState.isRiddleResolved = true;
-    }
+
+    Task<Void> backgroundTask =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws ApiProxyException {
+
+            ChatMessage lastMsg = runGpt(msg);
+
+            Platform.runLater(
+                () -> {
+                  if (lastMsg.getRole().equals("assistant")
+                      && lastMsg.getContent().startsWith("Correct")) {
+                    GameState.isMonsterVaseRiddleResolved = true;
+                  }
+                });
+            return null;
+          }
+        };
+
+    // This thread thing might not be needed, but I'm not sure.
+    Thread backgroundThread = new Thread(backgroundTask);
+    backgroundThread.start();
   }
 
   /**
@@ -111,8 +163,6 @@ public class ChatController {
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
 
-    Button button = (Button) event.getSource();
-    Scene sceneBackButtonIsIn = button.getScene();
-    sceneBackButtonIsIn.setRoot(SceneManager.getUiRoot(AppUi.ROOM));
+    App.setScene(AppUi.ROOM);
   }
 }
