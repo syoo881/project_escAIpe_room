@@ -39,11 +39,8 @@ public class ChatController {
   // It calls in the getRiddleWithGivenWord method from the GptPromptEngineering class.
   // It is currently hard coded to use the word "vase" as the riddle word.
   public void initialize() throws ApiProxyException {
-
-    // here, I think we put an if statement to decide what riddlewithGivenWord we give through to
-    // GPT
-    // Based off what the user clicked.
-    // USe threading here. Put these in background tasks.
+    System.out.println("Initialiszed");
+    choosePrompt();
   }
 
   /**
@@ -90,20 +87,39 @@ public class ChatController {
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    chatCompletionRequest.addMessage(msg);
-    try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      appendChatMessage(result.getChatMessage());
-      return result.getChatMessage();
-    } catch (ApiProxyException e) {
-      // TODO handle exception appropriately
-      // Add a popuperror message when no internet connection
-      // Maybe add like "Try again later"
-      e.printStackTrace();
-      return null;
-    }
+    Task<Void> gptTask =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws ApiProxyException {
+            chatCompletionRequest.addMessage(msg);
+            try {
+              ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+              Choice result = chatCompletionResult.getChoices().iterator().next();
+              chatCompletionRequest.addMessage(result.getChatMessage());
+              appendChatMessage(result.getChatMessage());
+
+              Platform.runLater(
+                  () -> {
+                    if (result.getChatMessage().getRole().equals("assistant")
+                        && result.getChatMessage().getContent().startsWith("Correct")) {
+                      if (GameState.isMonsterVaseClicked) {
+                        GameState.isMonsterVaseRiddleResolved = true;
+                      } else if (GameState.isMonsterBedClicked) {
+                        GameState.isMonsterBedRiddleResolved = true;
+                      }
+                    }
+                  });
+            } catch (ApiProxyException e) {
+              e.printStackTrace();
+              // Handle the exception appropriately
+            }
+            return null;
+          }
+        };
+
+    Thread gptThread = new Thread(gptTask);
+    gptThread.start();
+    return msg;
   }
 
   /**

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -13,6 +14,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.SceneManager.AppUi;
 import nz.ac.auckland.se206.UiUtils;
+import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
 
 /** Controller class for the room view. */
 public class RoomController {
@@ -20,6 +22,7 @@ public class RoomController {
   @FXML private Rectangle door;
   @FXML private Rectangle window;
   @FXML private Rectangle vase;
+  @FXML private TextArea frameSpeech;
 
   @FXML private ImageView normalVase;
   Image monsterVaseImage = new Image(getClass().getResourceAsStream("/images/monstervase.png"));
@@ -109,23 +112,21 @@ public class RoomController {
    *
    * @param event the mouse event
    * @throws IOException if there is an error loading the chat view
+   * @throws ApiProxyException
    */
   @FXML
-  public void clickMonsterVase(MouseEvent event) throws IOException {
+  public void clickMonsterVase(MouseEvent event) throws IOException, ApiProxyException {
 
     if (!GameState.isMonsterVaseRiddleResolved) {
-      GameState.isMonsterVaseClicked = true;
-      GameState.isMonsterBedClicked = false;
-      ChatController chatController = new ChatController();
-      chatController.choosePrompt();
+
       UiUtils.showDialog(
           "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
-      if (GameState.isMonsterVaseClicked) {
-        System.out.println("monster vase clicked");
-      }
-      App.setScene(AppUi.CHAT);
 
-      return;
+      ChatController chatController = new ChatController();
+      GameState.isMonsterVaseClicked = true;
+      GameState.isMonsterBedClicked = false;
+      chatController.initialize();
+      App.setScene(AppUi.CHAT);
     }
   }
 
