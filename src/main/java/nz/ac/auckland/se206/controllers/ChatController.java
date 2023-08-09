@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.SceneManager.AppUi;
-import nz.ac.auckland.se206.UiUtils;
 import nz.ac.auckland.se206.gpt.ChatMessage;
 import nz.ac.auckland.se206.gpt.GptPromptEngineering;
 import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
@@ -27,21 +26,7 @@ public class ChatController {
 
   private ChatCompletionRequest chatCompletionRequest;
 
-  private static boolean isMonsterVaseRiddle = false;
-  private boolean isMonsterBedRiddle = false;
-
   // ... (other methods and initializations)
-
-  public static void startMonsterVaseRiddle() {
-    isMonsterVaseRiddle = true;
-    UiUtils.showDialog(
-        "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
-    App.setScene(AppUi.CHAT);
-  }
-
-  public void startMonsterBedRiddle() {
-    isMonsterBedRiddle = true;
-  }
 
   /**
    * Initializes the chat view, loading the riddle.
@@ -59,6 +44,18 @@ public class ChatController {
     // GPT
     // Based off what the user clicked.
     // USe threading here. Put these in background tasks.
+  }
+
+  /**
+   * Appends a chat message to the chat text area.
+   *
+   * @param msg the chat message to append
+   */
+  private void appendChatMessage(ChatMessage msg) {
+    chatTextArea.appendText(msg.getRole() + ": " + msg.getContent() + "\n\n");
+  }
+
+  public void choosePrompt() {
 
     Task<Void> gptTask =
         new Task<Void>() {
@@ -71,21 +68,18 @@ public class ChatController {
                     .setTemperature(0.2)
                     .setTopP(0.5)
                     .setMaxTokens(100);
-            runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
+            if (GameState.isMonsterVaseClicked) {
+              runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
+            } else if (GameState.isMonsterBedClicked) {
+              runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("bed")));
+            } else {
+              runGpt(new ChatMessage("user", "Hello"));
+            }
             return null;
           }
         };
     Thread gptThread = new Thread(gptTask);
     gptThread.start();
-  }
-
-  /**
-   * Appends a chat message to the chat text area.
-   *
-   * @param msg the chat message to append
-   */
-  private void appendChatMessage(ChatMessage msg) {
-    chatTextArea.appendText(msg.getRole() + ": " + msg.getContent() + "\n\n");
   }
 
   /**
@@ -141,7 +135,11 @@ public class ChatController {
                 () -> {
                   if (lastMsg.getRole().equals("assistant")
                       && lastMsg.getContent().startsWith("Correct")) {
-                    GameState.isMonsterVaseRiddleResolved = true;
+                    if (GameState.isMonsterVaseClicked) {
+                      GameState.isMonsterVaseRiddleResolved = true;
+                    } else if (GameState.isMonsterBedClicked) {
+                      GameState.isMonsterBedRiddleResolved = true;
+                    }
                   }
                 });
             return null;
@@ -163,6 +161,13 @@ public class ChatController {
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
 
+    if (GameState.isMonsterVaseClicked) {
+      GameState.isMonsterVaseClicked = false;
+    }
+
+    if (GameState.isMonsterBedClicked) {
+      GameState.isMonsterBedClicked = false;
+    }
     App.setScene(AppUi.ROOM);
   }
 }

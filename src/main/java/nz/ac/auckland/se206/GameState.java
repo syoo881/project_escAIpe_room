@@ -12,4 +12,8 @@ public class GameState {
   public static boolean isMonsterVaseRiddleResolved = false;
 
   public static boolean isMonsterBedRiddleResolved = false;
+
+  public static boolean isMonsterVaseClicked = false;
+
+  public static boolean isMonsterBedClicked = false;
 }

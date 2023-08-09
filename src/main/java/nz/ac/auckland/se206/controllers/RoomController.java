@@ -114,7 +114,17 @@ public class RoomController {
   public void clickMonsterVase(MouseEvent event) throws IOException {
 
     if (!GameState.isMonsterVaseRiddleResolved) {
-      ChatController.startMonsterVaseRiddle();
+      GameState.isMonsterVaseClicked = true;
+      GameState.isMonsterBedClicked = false;
+      ChatController chatController = new ChatController();
+      chatController.choosePrompt();
+      UiUtils.showDialog(
+          "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
+      if (GameState.isMonsterVaseClicked) {
+        System.out.println("monster vase clicked");
+      }
+      App.setScene(AppUi.CHAT);
+
       return;
     }
   }
