@@ -106,7 +106,7 @@ public class RoomController {
    * @throws IOException if there is an error loading the chat view
    */
   @FXML
-  public void clickDoor(MouseEvent event) throws IOException {
+  public void clickMonsterVase(MouseEvent event) throws IOException {
     System.out.println("door clicked");
 
     if (!GameState.isRiddleResolved) {
