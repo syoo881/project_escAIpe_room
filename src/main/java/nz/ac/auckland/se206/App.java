@@ -2,6 +2,7 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -71,5 +72,13 @@ public class App extends Application {
 
   public static void setScene(AppUi fxml) {
     scene.setRoot(SceneManager.getUiRoot(fxml));
+  }
+
+  public static void showGameOverDialog() {
+    Platform.runLater(
+        () -> {
+          UiUtils.showDialog(
+              "Game Over", "Time's up!", "Unfortunately, you didn't complete the tasks in time.");
+        });
   }
 }

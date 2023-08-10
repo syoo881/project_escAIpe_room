@@ -134,26 +134,29 @@ public class RoomController {
               } else if (GameState.isBedRiddleResolved && !GameState.isMonsterVaseResolved) {
                 System.out.println("BedRiddle is solved");
                 prompt =
-                    "Since the BedRiddle is solved, first congratulate the user for finding Fred"
-                        + " and solving the riddle. After, give a hint for the vase, but you still"
-                        + " cannot use the word vase. After, talk about your friend Vanessa (the"
-                        + " vase) Also, only print out one sentence at a time.";
+                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                        + " Since the BedRiddle is solved, first congratulate the user for finding"
+                        + " Fred and solving the riddle. After, give a hint for the vase, but you"
+                        + " still cannot use the word vase. After, talk about your friend Vanessa"
+                        + " (the vase) Also, only print out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               } else if (!GameState.isBedRiddleResolved && GameState.isMonsterVaseResolved) {
                 prompt =
-                    "Since the MonsterVaseGame is solved, first congratulate the user for finding"
-                        + " Vanessa the vase and solving the game. After, give a hint for the bed"
-                        + " but you still cannot use the word bed. After, talk about your friend"
-                        + " Cade (hiding under the bed). Also, only print out one sentence at a"
-                        + " time.";
+                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                        + " Since the MonsterVaseGame is solved, first congratulate the user for"
+                        + " finding Vanessa the vase and solving the game. After, give a hint for"
+                        + " the bed but you still cannot use the word bed. After, talk about your"
+                        + " friend Cade (hiding under the bed). Also, only print out one sentence"
+                        + " at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
 
               } else {
                 prompt =
-                    "Since both games are solved, First congratulate the user for finding both"
-                        + " friends and solving the games. After, tell them that they have one last"
-                        + " task to do, which is to find someone/something. Also, only print out"
-                        + " one sentence at a time.";
+                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                        + " Since both games are solved, First congratulate the user for finding"
+                        + " both friends and solving the games. After, tell them that they have one"
+                        + " last task to do, which is to find someone/something. Also, only print"
+                        + " out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               }
 
@@ -179,7 +182,7 @@ public class RoomController {
         });
   }
 
-  public void startTimer() {
+  private void startTimer() {
     Thread countdownThread =
         new Thread(
             () -> {
@@ -191,14 +194,12 @@ public class RoomController {
                   e.printStackTrace();
                 }
                 remainingSeconds--;
-                if (remainingSeconds % 5 == 0) {
-                  // Need to get reference of original chatController class, to use Rungpt
-                }
               }
               Platform.runLater(
                   () -> {
                     timerLabel.setText("Time's up!");
                     promptUpdateTimeline.stop();
+                    App.showGameOverDialog(); // Call the method to display game over dialog
                   });
             });
 
@@ -276,7 +277,9 @@ public class RoomController {
     if (!GameState.isMonsterVaseResolved) {
 
       UiUtils.showDialog(
-          "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
+          "?!!!",
+          "Hey! Don't touch me I'm not a monster! What do you even think I am!",
+          " You're gonna have to beat" + " me with your hands! First to three!");
       App.setScene(AppUi.RCS);
     } else if (GameState.isMonsterVaseResolved) {
       UiUtils.showDialog(":(", "You Meanie!", "Go away!");
