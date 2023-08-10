@@ -39,7 +39,6 @@ public class ChatController {
   // It calls in the getRiddleWithGivenWord method from the GptPromptEngineering class.
   // It is currently hard coded to use the word "vase" as the riddle word.
   public void initialize() throws ApiProxyException {
-    System.out.println("Initialiszed");
     choosePrompt();
   }
 
@@ -63,29 +62,14 @@ public class ChatController {
                 new ChatCompletionRequest()
                     .setN(1)
                     .setTemperature(0.2)
-                    .setTopP(0.5)
+                    .setTopP(0.9)
                     .setMaxTokens(100);
-            if (GameState.isMonsterVaseClicked) {
-              runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
-            } else if (GameState.isMonsterBedClicked) {
-              runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("bed")));
-            } else {
-              runGpt(new ChatMessage("user", "Hello"));
-            }
+            runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("bed")));
             return null;
           }
         };
     Thread gptThread = new Thread(gptTask);
     gptThread.start();
-  }
-
-  public ChatMessage getGptGeneratedPrompt() throws ApiProxyException {
-    ChatMessage prompt =
-        new ChatMessage(
-            "user",
-            "In 6 words or less, give clues about vases, bedrooms and frames, in random order."
-                + " Never say these words - just hints.");
-    return runGpt(prompt); // Modify runGpt method as needed
   }
 
   /**
@@ -106,18 +90,6 @@ public class ChatController {
               Choice result = chatCompletionResult.getChoices().iterator().next();
               chatCompletionRequest.addMessage(result.getChatMessage());
               appendChatMessage(result.getChatMessage());
-
-              Platform.runLater(
-                  () -> {
-                    if (result.getChatMessage().getRole().equals("assistant")
-                        && result.getChatMessage().getContent().startsWith("Correct")) {
-                      if (GameState.isMonsterVaseClicked) {
-                        GameState.isMonsterVaseRiddleResolved = true;
-                      } else if (GameState.isMonsterBedClicked) {
-                        GameState.isMonsterBedRiddleResolved = true;
-                      }
-                    }
-                  });
             } catch (ApiProxyException e) {
               e.printStackTrace();
               // Handle the exception appropriately
@@ -160,11 +132,7 @@ public class ChatController {
                 () -> {
                   if (lastMsg.getRole().equals("assistant")
                       && lastMsg.getContent().startsWith("Correct")) {
-                    if (GameState.isMonsterVaseClicked) {
-                      GameState.isMonsterVaseRiddleResolved = true;
-                    } else if (GameState.isMonsterBedClicked) {
-                      GameState.isMonsterBedRiddleResolved = true;
-                    }
+                    GameState.isBedRiddleResolved = true;
                   }
                 });
             return null;
@@ -186,13 +154,6 @@ public class ChatController {
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
 
-    if (GameState.isMonsterVaseClicked) {
-      GameState.isMonsterVaseClicked = false;
-    }
-
-    if (GameState.isMonsterBedClicked) {
-      GameState.isMonsterBedClicked = false;
-    }
     App.setScene(AppUi.ROOM);
   }
 }

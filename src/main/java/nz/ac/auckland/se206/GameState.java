@@ -4,16 +4,10 @@ package nz.ac.auckland.se206;
 public class GameState {
 
   /** Indicates whether the riddle has been resolved. */
-  public static boolean isRiddleResolved = false;
+  public static boolean isBedRiddleResolved = false;
+
+  public static boolean isMonsterVaseResolved = false;
 
   /** Indicates whether the key has been found. */
   public static boolean isKeyFound = false;
-
-  public static boolean isMonsterVaseRiddleResolved = false;
-
-  public static boolean isMonsterBedRiddleResolved = false;
-
-  public static boolean isMonsterVaseClicked = false;
-
-  public static boolean isMonsterBedClicked = false;
 }

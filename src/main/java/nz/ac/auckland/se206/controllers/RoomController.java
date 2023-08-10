@@ -49,25 +49,15 @@ public class RoomController {
   private ChatCompletionRequest chatCompletionRequest;
   private Timeline promptUpdateTimeline;
   private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-  TextToSpeech frameSpeechTTS = new TextToSpeech();
+  TextToSpeech frameSpeechTts = new TextToSpeech();
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
     // Initialization code goes here
+
     startTimer();
     startPromptUpdate();
-
-    Task<Void> introduction =
-        new Task<Void>() {
-
-          @Override
-          protected Void call() throws Exception {
-            frameSpeechTTS.speak("Hello welcome to my home");
-            return null;
-          }
-        };
-    Thread introductionThread = new Thread(introduction);
-    introductionThread.setDaemon(true);
+    introduceTts();
 
     Platform.runLater(
         () -> {
@@ -81,11 +71,27 @@ public class RoomController {
         });
   }
 
+  private void introduceTts() {
+    Task<Void> frameTts =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            frameSpeechTts.speak("Hello welcome to my home");
+            return null;
+          }
+        };
+    Thread frameTtsThread = new Thread(frameTts);
+    frameTtsThread.start();
+  }
+
   private void stopBackgroundTasks() {
     if (promptUpdateTimeline != null) {
       promptUpdateTimeline.stop();
     }
   }
+
+  // Check if the background tasks work
 
   private void startPromptUpdate() {
     promptUpdateTimeline =
@@ -106,11 +112,12 @@ public class RoomController {
               // Generate a prompt using GptPromptEngineering
               String prompt =
                   "You are a black blob on a frame. You have two close friends hiding in this room."
-                      + " They are a pottery and a bed. Give short (under 10 word) hints to the"
-                      + " userbut you must never use the word pottery and bed, as that would be"
-                      + " giving it away. As a reference, you are a helpful cheerful individual,"
-                      + " giving hints in the form of jokes, or references, such as: Ever had the"
-                      + " feeling of someone grabbing under your matress?";
+                      + " They are a vase and a bed. Give 5 word sentences the user as hints but"
+                      + " you must never use the word vase and bed, as that would be giving it"
+                      + " away. As a reference, you are a helpful cheerful individual, giving hints"
+                      + " in the form of jokes, or references, such as: Ever had the feeling of"
+                      + " someone grabbing under your matress? Also, only print out one sentences"
+                      + " at a time.";
 
               // Request GPT API for completion
               chatCompletionRequest =
@@ -237,24 +244,33 @@ public class RoomController {
   @FXML
   public void clickMonsterVase(MouseEvent event) throws IOException, ApiProxyException {
 
-    if (!GameState.isMonsterVaseRiddleResolved) {
+    if (!GameState.isMonsterVaseResolved) {
 
       UiUtils.showDialog(
           "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
 
-      ChatController chatController = new ChatController();
-      GameState.isMonsterVaseClicked = true;
-      GameState.isMonsterBedClicked = false;
-      chatController.initialize();
       App.setScene(AppUi.CHAT);
+    } else if (GameState.isMonsterVaseResolved) {
+      UiUtils.showDialog(":(", "You Meanie!", "Go away!");
+    }
+  }
+
+  @FXML
+  public void clickBed(MouseEvent event) throws IOException {
+
+    if (!GameState.isBedRiddleResolved) {
+      UiUtils.showDialog("?!!!!", "MEOW!", "IM NOT SHOWING UNTIL YOU ANSWER RIGHT!");
+      App.setScene(AppUi.CHAT);
+    } else if (GameState.isBedRiddleResolved) {
+      UiUtils.showDialog("O_O", "WOW!", "You're pretty good!");
     }
   }
 
   @FXML
   public void clickMonsterFrame(MouseEvent event) throws IOException {
 
-    if ((!GameState.isMonsterVaseRiddleResolved) && !GameState.isMonsterBedRiddleResolved) {
-      UiUtils.showDialog("Hehehe", "You Won!", "Good Job!");
+    if ((!GameState.isMonsterVaseResolved) && !GameState.isBedRiddleResolved) {
+      UiUtils.showDialog("Hehehe", "You found my Friends!", "Now you'll have to beat me!");
     }
   }
 
@@ -262,7 +278,7 @@ public class RoomController {
   public void click(MouseEvent event) throws IOException {
     System.out.println("door clicked");
 
-    if (!GameState.isRiddleResolved) {
+    if (!GameState.isMonsterVaseResolved) {
       UiUtils.showDialog("Info", "Riddle", "You need to resolve the riddle!");
       App.setScene(AppUi.CHAT);
       return;
@@ -276,19 +292,19 @@ public class RoomController {
     }
   }
 
-  /**
-   * Handles the click event on the vase.
-   *
-   * @param event the mouse event
-   */
-  @FXML
-  public void clickVase(MouseEvent event) {
-    System.out.println("vase clicked");
-    if (GameState.isRiddleResolved && !GameState.isKeyFound) {
-      UiUtils.showDialog("Info", "Key Found", "You found a key under the vase!");
-      GameState.isKeyFound = true;
-    }
-  }
+  // /**
+  //  * Handles the click event on the vase.
+  //  *
+  //  * @param event the mouse event
+  //  */
+  // @FXML
+  // public void clickVase(MouseEvent event) {
+  //   System.out.println("vase clicked");
+  //   if (GameState.isRiddleResolved && !GameState.isKeyFound) {
+  //     UiUtils.showDialog("Info", "Key Found", "You found a key under the vase!");
+  //     GameState.isKeyFound = true;
+  //   }
+  // }
 
   /**
    * Handles the click event on the window.
