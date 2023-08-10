@@ -94,6 +94,12 @@ public class VaseGameController {
   public void computerWin() {
     result.setText("You Lose");
     cadeScore.setText(String.valueOf(Integer.parseInt(cadeScore.getText()) + 1));
+    if (Integer.parseInt(cadeScore.getText()) == 3) {
+      result.setText("You Lose the Game");
+      UiUtils.showDialog("Haha!", "You suck at this game!", "Cmon GO again!");
+      userScore.setText("0");
+      cadeScore.setText("0");
+    }
   }
 
   public void draw() {

@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.SceneManager.AppUi;
+import nz.ac.auckland.se206.UiUtils;
 import nz.ac.auckland.se206.gpt.ChatMessage;
 import nz.ac.auckland.se206.gpt.GptPromptEngineering;
 import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
@@ -79,28 +80,50 @@ public class ChatController {
    * @return the response chat message
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    Task<Void> gptTask =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws ApiProxyException {
-            chatCompletionRequest.addMessage(msg);
-            try {
-              ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-              Choice result = chatCompletionResult.getChoices().iterator().next();
-              chatCompletionRequest.addMessage(result.getChatMessage());
-              appendChatMessage(result.getChatMessage());
-            } catch (ApiProxyException e) {
-              e.printStackTrace();
-              // Handle the exception appropriately
-            }
-            return null;
-          }
-        };
+  // private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+  //   Task<Void> gptTask =
+  //       new Task<Void>() {
+  //         @Override
+  //         protected Void call() throws Exception {
+  //           chatCompletionRequest.addMessage(msg);
+  //           try {
+  //             ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+  //             Choice result = chatCompletionResult.getChoices().iterator().next();
+  //             chatCompletionRequest.addMessage(result.getChatMessage());
+  //             appendChatMessage(result.getChatMessage());
+  //           } catch (ApiProxyException e) {
+  //             e.printStackTrace();
+  //             UiUtils.showDialog(
+  //                 "Error",
+  //                 "Error communicating with the API proxy",
+  //                 "Please check your internet connection and try again.");
+  //             // Handle the exception appropriately
+  //           }
+  //           return null;
+  //         }
+  //       };
 
-    Thread gptThread = new Thread(gptTask);
-    gptThread.start();
-    return msg;
+  //   Thread thread = new Thread(gptTask);
+  //   thread.start();
+  //   return new ChatMessage(null, null);
+  // }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    chatCompletionRequest.addMessage(msg);
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      appendChatMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      UiUtils.showDialog(
+          "Error",
+          "Error communicating with the API proxy",
+          "Please check your internet connection and try again.");
+      return null;
+    }
   }
 
   /**
@@ -119,29 +142,23 @@ public class ChatController {
     inputText.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
-
     Task<Void> backgroundTask =
         new Task<Void>() {
-
           @Override
           protected Void call() throws ApiProxyException {
-
             ChatMessage lastMsg = runGpt(msg);
-
             Platform.runLater(
                 () -> {
                   if (lastMsg.getRole().equals("assistant")
                       && lastMsg.getContent().startsWith("Correct")) {
+                    System.out.println("Riddle solved");
                     GameState.isBedRiddleResolved = true;
                   }
                 });
             return null;
           }
         };
-
-    // This thread thing might not be needed, but I'm not sure.
-    Thread backgroundThread = new Thread(backgroundTask);
-    backgroundThread.start();
+    new Thread(backgroundTask).start();
   }
 
   /**

@@ -134,17 +134,17 @@ public class RoomController {
               } else if (GameState.isBedRiddleResolved && !GameState.isMonsterVaseResolved) {
                 System.out.println("BedRiddle is solved");
                 prompt =
-                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                    "Note: Only answer with one sentence. The sentences are at most 7 words long."
                         + " Since the BedRiddle is solved, first congratulate the user for finding"
-                        + " Fred and solving the riddle. After, give a hint for the vase, but you"
+                        + " Fred and solving the riddle. Then, give a hint for the vase, but you"
                         + " still cannot use the word vase. After, talk about your friend Vanessa"
                         + " (the vase) Also, only print out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               } else if (!GameState.isBedRiddleResolved && GameState.isMonsterVaseResolved) {
                 prompt =
-                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                    "Note: Only answer with one sentence. The sentences are at most 7 words long."
                         + " Since the MonsterVaseGame is solved, first congratulate the user for"
-                        + " finding Vanessa the vase and solving the game. After, give a hint for"
+                        + " finding Vanessa the vase and solving the game. Then, give a hint for"
                         + " the bed but you still cannot use the word bed. After, talk about your"
                         + " friend Cade (hiding under the bed). Also, only print out one sentence"
                         + " at a time.";
@@ -154,7 +154,7 @@ public class RoomController {
                 prompt =
                     "Note: Only anwer with one sentence. The sentences are at most 7 words long."
                         + " Since both games are solved, First congratulate the user for finding"
-                        + " both friends and solving the games. After, tell them that they have one"
+                        + " both friends and solving the games. Then, tell them that they have one"
                         + " last task to do, which is to find someone/something. Also, only print"
                         + " out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
@@ -197,7 +197,7 @@ public class RoomController {
               }
               Platform.runLater(
                   () -> {
-                    timerLabel.setText("Time's up!");
+                    timerLabel.setText("XX:XX");
                     promptUpdateTimeline.stop();
                     App.showGameOverDialog(); // Call the method to display game over dialog
                   });
@@ -249,21 +249,6 @@ public class RoomController {
     System.out.println("key " + event.getCode() + " released");
   }
 
-  // /**
-  //  * Displays a dialog box with the given title, header text, and message.
-  //  *
-  //  * @param title the title of the dialog box
-  //  * @param headerText the header text of the dialog box
-  //  * @param message the message content of the dialog box
-  //  */
-  // private void showDialog(String title, String headerText, String message) {
-  //   Alert alert = new Alert(Alert.AlertType.INFORMATION);
-  //   alert.setTitle(title);
-  //   alert.setHeaderText(headerText);
-  //   alert.setContentText(message);
-  //   alert.showAndWait();
-  // }
-
   /**
    * Handles the click event on the door.
    *
@@ -292,8 +277,10 @@ public class RoomController {
     if (!GameState.isBedRiddleResolved) {
       UiUtils.showDialog("?!!!!", "MEOW!", "IM NOT SHOWING UNTIL YOU ANSWER RIGHT!");
       App.setScene(AppUi.CHAT);
+      return;
     } else if (GameState.isBedRiddleResolved) {
       UiUtils.showDialog("O_O", "WOW!", "You're pretty good!");
+      return;
     }
   }
 
@@ -303,47 +290,5 @@ public class RoomController {
     if ((!GameState.isMonsterVaseResolved) && !GameState.isBedRiddleResolved) {
       UiUtils.showDialog("Hehehe", "You found my Friends!", "Now you'll have to beat me!");
     }
-  }
-
-  @FXML
-  public void click(MouseEvent event) throws IOException {
-    System.out.println("door clicked");
-
-    if (!GameState.isMonsterVaseResolved) {
-      UiUtils.showDialog("Info", "Riddle", "You need to resolve the riddle!");
-      App.setScene(AppUi.CHAT);
-      return;
-    }
-
-    if (!GameState.isKeyFound) {
-      UiUtils.showDialog(
-          "Info", "Find the key!", "You resolved the riddle, now you know where the key is.");
-    } else {
-      UiUtils.showDialog("Info", "You Won!", "Good Job!");
-    }
-  }
-
-  // /**
-  //  * Handles the click event on the vase.
-  //  *
-  //  * @param event the mouse event
-  //  */
-  // @FXML
-  // public void clickVase(MouseEvent event) {
-  //   System.out.println("vase clicked");
-  //   if (GameState.isRiddleResolved && !GameState.isKeyFound) {
-  //     UiUtils.showDialog("Info", "Key Found", "You found a key under the vase!");
-  //     GameState.isKeyFound = true;
-  //   }
-  // }
-
-  /**
-   * Handles the click event on the window.
-   *
-   * @param event the mouse event
-   */
-  @FXML
-  public void clickWindow(MouseEvent event) {
-    System.out.println("window clicked");
   }
 }
