@@ -151,7 +151,6 @@ public class ChatController {
                 () -> {
                   if (lastMsg.getRole().equals("assistant")
                       && lastMsg.getContent().startsWith("Correct")) {
-                    System.out.println("Riddle solved");
                     GameState.isBedRiddleResolved = true;
                   }
                 });

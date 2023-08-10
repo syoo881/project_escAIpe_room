@@ -10,6 +10,7 @@ public class SceneManager {
     CHAT,
     RCS,
     MEMORY,
+    EXIT,
   }
 
   private static HashMap<AppUi, Parent> sceneMap = new HashMap<AppUi, Parent>();

@@ -15,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.SceneManager.AppUi;
+import nz.ac.auckland.se206.UiUtils;
 
 public class MemoryController implements Initializable {
 
@@ -70,6 +73,11 @@ public class MemoryController implements Initializable {
       Button button = buttons.get(getIndexOfButton(event));
       changeButtonColor(button, "-fx-base: lightgreen");
       counter++;
+      if (counter == 5) {
+        UiUtils.showDialog("Muffins", "Congratulations, you won!", "I'll see you again Next Time!");
+        App.setScene(AppUi.EXIT);
+      }
+
     } else {
       Button button = buttons.get(getIndexOfButton(event));
       changeButtonColor(button, "-fx-base: red");
@@ -88,7 +96,6 @@ public class MemoryController implements Initializable {
 
     pattern.add(possibleButtons.get(random.nextInt(possibleButtons.size())));
     showPattern();
-    System.out.println(pattern);
 
     counter = 0;
     turn = 1;
@@ -100,7 +107,6 @@ public class MemoryController implements Initializable {
 
     pattern.add(possibleButtons.get(random.nextInt(possibleButtons.size())));
     showPattern();
-    System.out.println(pattern);
   }
 
   private int getIndexOfButton(ActionEvent event) {
