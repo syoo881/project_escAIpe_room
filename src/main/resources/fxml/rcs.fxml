@@ -9,14 +9,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="package nz.ac.auckland.se206.controllers.VaseGameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.VaseGameController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="159.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="149.0" prefWidth="171.0">
                <children>
-                  <Button fx:id="rockButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0.5);">
+                  <Button fx:id="rockButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playerTurn" style="-fx-background-color: rgba(0,0,0,0.5);">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -34,7 +33,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="139.0" prefWidth="167.0">
                <children>
-                  <Button fx:id="paperButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0.5);">
+                  <Button fx:id="paperButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playerTurn" style="-fx-background-color: rgba(0,0,0,0.5);">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -52,7 +51,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="139.0" prefWidth="168.0">
                <children>
-                  <Button fx:id="scissorButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0.5);">
+                  <Button fx:id="scissorButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playerTurn" style="-fx-background-color: rgba(0,0,0,0.5);">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                            <image>

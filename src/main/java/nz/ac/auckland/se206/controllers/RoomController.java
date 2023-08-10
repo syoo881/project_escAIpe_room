@@ -62,6 +62,8 @@ public class RoomController {
     Platform.runLater(
         () -> {
           Stage stage = (Stage) frameSpeech.getScene().getWindow();
+
+          // Set the close request event handler here
           stage.setOnCloseRequest(
               event -> {
                 stopBackgroundTasks();
@@ -275,8 +277,7 @@ public class RoomController {
 
       UiUtils.showDialog(
           "?!!!", "Hey!", "Don't touch me I'm not a monster! What do you even think I am!");
-
-      App.setScene(AppUi.CHAT);
+      App.setScene(AppUi.RCS);
     } else if (GameState.isMonsterVaseResolved) {
       UiUtils.showDialog(":(", "You Meanie!", "Go away!");
     }
