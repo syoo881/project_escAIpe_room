@@ -142,20 +142,20 @@ public class RoomController {
               } else if (!GameState.isBedRiddleResolved && GameState.isMonsterVaseResolved) {
                 prompt =
                     "Note: Only answer with one sentence. The sentences are at most 7 words long."
-                        + " Since the MonsterVaseGame is solved, first congratulate the user for"
-                        + " finding Vanessa the vase and solving the game. Then, give a hint for"
-                        + " the bed but you still cannot use the word bed. After, talk about your"
-                        + " friend Cade (hiding under the bed). Also, only print out one sentence"
-                        + " at a time.";
+                        + " Since the MonsterVaseGame is solved, first congratulate with one"
+                        + " sentence, the user for finding Vanessa the vase and solving the game."
+                        + " Then, give a hint for the bed but you still cannot use the word bed."
+                        + " After, talk about your friend Cade (hiding under the bed). Also, only"
+                        + " print out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
 
               } else {
                 prompt =
                     "Note: Only answer with one sentence. The sentences are at most 7 words long."
-                        + " Since both games are solved, First congratulate the user for finding"
-                        + " both friends and solving the games. Then, tell them that they have one"
-                        + " last task to do, which is to find someone/something. Also, only print"
-                        + " out one sentence at a time.";
+                        + " Since both games are solved, First congratulate the user with one"
+                        + " sentence for finding both friends and solving the games. Then, tell"
+                        + " them that they have one last task to do, which is to find"
+                        + " someone/something. Also, only print out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               }
 
@@ -241,12 +241,12 @@ public class RoomController {
     if (!GameState.isMonsterVaseResolved) {
 
       UiUtils.showDialog(
-          "?!!!",
+          "???",
           "Hey! Don't touch me I'm not a monster! What do you even think I am!",
           " You're gonna have to beat" + " me with your hands! First to three!");
       App.setScene(AppUi.RCS);
     } else if (GameState.isMonsterVaseResolved) {
-      UiUtils.showDialog(":(", "You Meanie!", "Go away!");
+      UiUtils.showDialog("Vanessa", ":( You Meanie!", "Go away!");
     }
   }
 
@@ -254,11 +254,11 @@ public class RoomController {
   public void clickBed(MouseEvent event) throws IOException {
 
     if (!GameState.isBedRiddleResolved) {
-      UiUtils.showDialog("?!!!!", "MEOW!", "IM NOT SHOWING UNTIL YOU ANSWER RIGHT!");
+      UiUtils.showDialog("???", "MEOW!", "IM NOT SHOWING UNTIL YOU ANSWER RIGHT!");
       App.setScene(AppUi.CHAT);
       return;
     } else if (GameState.isBedRiddleResolved) {
-      UiUtils.showDialog("O_O", "WOW!", "You're pretty good!");
+      UiUtils.showDialog("Cade", "O_O WOW!", "You're pretty good!");
       return;
     }
   }
@@ -266,8 +266,14 @@ public class RoomController {
   @FXML
   public void clickMonsterFrame(MouseEvent event) throws IOException {
 
-    if ((!GameState.isMonsterVaseResolved) && !GameState.isBedRiddleResolved) {
-      UiUtils.showDialog("Hehehe", "You found my Friends!", "Now you'll have to beat me!");
+    if ((GameState.isMonsterVaseResolved) && GameState.isBedRiddleResolved) {
+      UiUtils.showDialog(
+          "???",
+          "You found my Friends! Now you'll have to beat me!",
+          "Can you memorize more than 5 friends at once?");
+      App.setScene(AppUi.MEMORY);
+    } else {
+      UiUtils.showDialog("...", "You're not done yet!", "Go find my friends!");
     }
   }
 }
