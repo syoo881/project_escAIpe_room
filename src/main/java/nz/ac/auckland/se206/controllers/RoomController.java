@@ -110,23 +110,50 @@ public class RoomController {
           protected Void call() throws Exception {
             try {
               // Generate a prompt using GptPromptEngineering
-              String prompt =
-                  "You are a black blob on a frame. You have two close friends hiding in this room."
-                      + " They are a vase and a bed. Give 5 word sentences the user as hints but"
-                      + " you must never use the word vase and bed, as that would be giving it"
-                      + " away. As a reference, you are a helpful cheerful individual, giving hints"
-                      + " in the form of jokes, or references, such as: Ever had the feeling of"
-                      + " someone grabbing under your matress? Also, only print out one sentences"
-                      + " at a time.";
-
-              // Request GPT API for completion
+              String prompt;
               chatCompletionRequest =
                   new ChatCompletionRequest()
                       .setN(1)
-                      .setTemperature(0.2)
-                      .setTopP(0.5)
+                      .setTemperature(0.5)
+                      .setTopP(0.9)
                       .setMaxTokens(100);
-              chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
+              if (!GameState.isBedRiddleResolved && !GameState.isMonsterVaseResolved) {
+                prompt =
+                    "You are a black blob on a frame. You have two close friends hiding in this"
+                        + " room. They are a vase, Vanessa and hidden under a bed, called Cade."
+                        + " Give one sentence hints about Vanessa and Cade without using the word"
+                        + " vase and bed. The sentences are at most 7 words long. . Also talk about"
+                        + " your two hidden friends as well. Also, only print out one sentences at"
+                        + " a time.";
+
+                // Request GPT API for completion
+
+                chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
+              } else if (GameState.isBedRiddleResolved && !GameState.isMonsterVaseResolved) {
+                System.out.println("BedRiddle is solved");
+                prompt =
+                    "Since the BedRiddle is solved, first congratulate the user for finding Fred"
+                        + " and solving the riddle. After, give a hint for the vase, but you still"
+                        + " cannot use the word vase. After, talk about your friend Vanessa (the"
+                        + " vase) Also, only print out one sentence at a time.";
+                chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
+              } else if (!GameState.isBedRiddleResolved && GameState.isMonsterVaseResolved) {
+                prompt =
+                    "Since the MonsterVaseGame is solved, first congratulate the user for finding"
+                        + " Vanessa the vase and solving the game. After, give a hint for the bed"
+                        + " but you still cannot use the word bed. After, talk about your friend"
+                        + " Cade (hiding under the bed). Also, only print out one sentence at a"
+                        + " time.";
+                chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
+
+              } else {
+                prompt =
+                    "Since both games are solved, First congratulate the user for finding both"
+                        + " friends and solving the games. After, tell them that they have one last"
+                        + " task to do, which is to find someone/something. Also, only print out"
+                        + " one sentence at a time.";
+                chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
+              }
 
               ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
 
