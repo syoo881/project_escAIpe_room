@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -152,7 +151,7 @@ public class RoomController {
 
               } else {
                 prompt =
-                    "Note: Only anwer with one sentence. The sentences are at most 7 words long."
+                    "Note: Only answer with one sentence. The sentences are at most 7 words long."
                         + " Since both games are solved, First congratulate the user for finding"
                         + " both friends and solving the games. Then, tell them that they have one"
                         + " last task to do, which is to find someone/something. Also, only print"
@@ -227,26 +226,6 @@ public class RoomController {
     int minutes = seconds / 60;
     int secs = seconds % 60;
     return String.format("%02d:%02d", minutes, secs);
-  }
-
-  /**
-   * Handles the key pressed event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyPressed(KeyEvent event) {
-    System.out.println("key " + event.getCode() + " pressed");
-  }
-
-  /**
-   * Handles the key released event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyReleased(KeyEvent event) {
-    System.out.println("key " + event.getCode() + " released");
   }
 
   /**
