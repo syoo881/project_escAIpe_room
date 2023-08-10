@@ -9,9 +9,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ExitScreenController">
    <children>
-      <ImageView fitHeight="470.0" fitWidth="600.0" layoutX="-2.0" layoutY="-1.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fx:id="exitImageVIew" fitHeight="470.0" fitWidth="600.0" layoutX="-2.0" layoutY="-1.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@../../../../../../../Downloads/Firefly%20Background%20image%20of%20black%20dark%20night%20sky%2085622%20(1).jpg" />
+            <Image url="@../images/gameOverScreen.jpg" />
          </image>
       </ImageView>
       <Button fx:id="playAgainButton" layoutX="210.0" layoutY="321.0" mnemonicParsing="false" onAction="#playAgain" text="Play Again?">

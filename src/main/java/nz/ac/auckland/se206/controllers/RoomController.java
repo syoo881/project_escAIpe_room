@@ -49,6 +49,7 @@ public class RoomController {
   private Timeline promptUpdateTimeline;
   private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
   TextToSpeech frameSpeechTts = new TextToSpeech();
+  TextToSpeech ggTts = new TextToSpeech();
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -199,11 +200,27 @@ public class RoomController {
                     timerLabel.setText("XX:XX");
                     promptUpdateTimeline.stop();
                     App.showGameOverDialog(); // Call the method to display game over dialog
+                    App.setScene(AppUi.EXIT);
+                    gameOverTts();
                   });
             });
 
     countdownThread.setDaemon(true);
     countdownThread.start();
+  }
+
+  private void gameOverTts() {
+    Task<Void> gameOverTask =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            ggTts.speak("Hello welcome to my home");
+            return null;
+          }
+        };
+    Thread ggTtsThread = new Thread(gameOverTask);
+    ggTtsThread.start();
   }
 
   public void toMonsterBed() {
@@ -242,8 +259,9 @@ public class RoomController {
 
       UiUtils.showDialog(
           "???",
-          "Hey! Don't touch me I'm not a monster! What do you even think I am!",
-          " You're gonna have to beat" + " me with your hands! First to three!");
+          "Hey! Don't touch me I'm not gonna come out!",
+          " To do that you're gonna have to beat"
+              + " me in Rock, Paper, Scissors! First to three!");
       App.setScene(AppUi.RCS);
     } else if (GameState.isMonsterVaseResolved) {
       UiUtils.showDialog("Vanessa", ":( You Meanie!", "Go away!");
@@ -270,7 +288,7 @@ public class RoomController {
       UiUtils.showDialog(
           "???",
           "You found my Friends! Now you'll have to beat me!",
-          "Can you memorize more than 5 friends at once?");
+          "I can memorize 3 friends. Can you memorize more than that?");
       App.setScene(AppUi.MEMORY);
     } else {
       UiUtils.showDialog("...", "You're not done yet!", "Go find my friends!");

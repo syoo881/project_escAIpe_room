@@ -79,8 +79,7 @@ public class App extends Application {
   public static void showGameOverDialog() {
     Platform.runLater(
         () -> {
-          UiUtils.showDialog(
-              "Game Over", "Time's up!", "Unfortunately, you didn't complete the tasks in time.");
+          UiUtils.showDialog("Game Over", "Time's up!", "Thanks for playing the game!");
         });
   }
 }

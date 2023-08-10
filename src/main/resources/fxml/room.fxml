@@ -26,9 +26,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="459.0" layoutY="14.0" prefHeight="43.0" prefWidth="101.0" text="Label">
+      <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="451.0" layoutY="6.0" prefHeight="43.0" prefWidth="101.0" text="Label">
          <font>
-            <Font size="27.0" />
+            <Font name="System Bold Italic" size="35.0" />
          </font>
          <textFill>
             <LinearGradient endX="1.0" endY="1.0">
@@ -60,7 +60,7 @@
             <Font size="29.0" />
          </font>
       </TextArea>
-      <Label fx:id="frameSpeech" alignment="CENTER" layoutX="50.0" layoutY="69.0" prefHeight="76.0" prefWidth="492.0" text="Help me find my friends, Vanessa and Cade!" textFill="WHITE" />
+      <Label fx:id="frameSpeech" alignment="CENTER" layoutX="50.0" layoutY="51.0" prefHeight="94.0" prefWidth="492.0" text="Help me find my friends, Vanessa and Cade!" textFill="WHITE" />
       <ImageView fx:id="monsterBed" fitHeight="64.0" fitWidth="101.0" layoutX="157.0" layoutY="377.0" onMouseClicked="#clickBed" onMouseEntered="#toMonsterBed" onMouseExited="#resetBed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/empty.png" />

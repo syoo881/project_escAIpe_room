@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.SceneManager.AppUi;
 import nz.ac.auckland.se206.UiUtils;
+import nz.ac.auckland.se206.speech.TextToSpeech;
 
 public class MemoryController implements Initializable {
 
@@ -37,6 +39,9 @@ public class MemoryController implements Initializable {
 
   int counter = 0;
   int turn = 1;
+  TextToSpeech exitTtsSpeech = new TextToSpeech();
+
+  boolean isStarted = false;
 
   @FXML private Button button0;
 
@@ -68,30 +73,53 @@ public class MemoryController implements Initializable {
   @FXML
   void buttonClicked(ActionEvent event) {
 
-    if (((Control) event.getSource()).getId().equals(pattern.get(counter))) {
-      text.setText("Correct " + counter);
-      Button button = buttons.get(getIndexOfButton(event));
-      changeButtonColor(button, "-fx-base: lightgreen");
-      counter++;
-      if (counter == 5) {
-        UiUtils.showDialog("Muffins", "Congratulations, you won!", "I'll see you again Next Time!");
-        App.setScene(AppUi.EXIT);
+    if (isStarted = false) {
+      UiUtils.showDialog("???", "Cmon!", "Press Start to begin!");
+    } else {
+
+      if (((Control) event.getSource()).getId().equals(pattern.get(counter))) {
+        text.setText("Correct " + counter);
+        Button button = buttons.get(getIndexOfButton(event));
+        changeButtonColor(button, "-fx-base: lightgreen");
+        counter++;
+        if (counter == 4) {
+          UiUtils.showDialog(
+              "Muffins", "Congratulations, you won!", "I'll see you again Next Time!");
+
+          exitSpeech();
+          App.setScene(AppUi.EXIT);
+        }
+
+      } else {
+        Button button = buttons.get(getIndexOfButton(event));
+        changeButtonColor(button, "-fx-base: red");
+        text.setText("Wrong");
+        return;
       }
 
-    } else {
-      Button button = buttons.get(getIndexOfButton(event));
-      changeButtonColor(button, "-fx-base: red");
-      text.setText("Wrong");
-      return;
+      if (counter == turn) {
+        nextTurn();
+      }
     }
+  }
 
-    if (counter == turn) {
-      nextTurn();
-    }
+  private void exitSpeech() {
+    Task<Void> exitTts =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            exitTtsSpeech.speak("See you next time");
+            return null;
+          }
+        };
+    Thread exitTtsThread = new Thread(exitTts);
+    exitTtsThread.start();
   }
 
   @FXML
   void start(ActionEvent event) {
+    isStarted = true;
     pattern.clear();
 
     pattern.add(possibleButtons.get(random.nextInt(possibleButtons.size())));
@@ -119,7 +147,7 @@ public class MemoryController implements Initializable {
   }
 
   private void showPattern() {
-    PauseTransition pause = new PauseTransition(Duration.seconds(1));
+    PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
     pause.setOnFinished(
         e -> {
           Timeline timeline =
