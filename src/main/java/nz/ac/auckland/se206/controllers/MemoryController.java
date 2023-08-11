@@ -23,25 +23,25 @@ import nz.ac.auckland.se206.speech.TextToSpeech;
 
 public class MemoryController implements Initializable {
 
-  ArrayList<String> possibleButtons =
+  private ArrayList<String> possibleButtons =
       new ArrayList<>(
           Arrays.asList(
               "button0", "button1", "button2", "button3", "button4", "button5", "button6",
               "button7", "button8"));
 
-  ArrayList<Button> buttons = new ArrayList<>();
+  private ArrayList<Button> buttons = new ArrayList<>();
 
-  ArrayList<String> pattern = new ArrayList<>();
+  private ArrayList<String> pattern = new ArrayList<>();
 
-  int patternOrder = 0;
+  private int patternOrder = 0;
 
-  Random random = new Random();
+  private Random random = new Random();
 
-  int counter = 0;
-  int turn = 1;
-  TextToSpeech exitTtsSpeech = new TextToSpeech();
+  private int counter = 0;
+  private int turn = 1;
+  private TextToSpeech exitTtsSpeech = new TextToSpeech();
 
-  boolean isStarted = false;
+  private boolean isStarted = false;
 
   @FXML private Button button0;
 
@@ -64,6 +64,7 @@ public class MemoryController implements Initializable {
   @FXML private Text text;
 
   @Override
+  // Initialize the code
   public void initialize(URL url, ResourceBundle resourceBundle) {
     buttons.addAll(
         Arrays.asList(
@@ -77,11 +78,14 @@ public class MemoryController implements Initializable {
       UiUtils.showDialog("???", "Cmon!", "Press Start to begin!");
     } else {
 
+      // When the button is clicked, we use the getIndexOfButton method to get the index of the
+      // button
       if (((Control) event.getSource()).getId().equals(pattern.get(counter))) {
         text.setText("Correct " + counter);
         Button button = buttons.get(getIndexOfButton(event));
         changeButtonColor(button, "-fx-base: lightgreen");
         counter++;
+        // if the counter is equal to 4, the game is over and the user has won
         if (counter == 4) {
           UiUtils.showDialog(
               "Muffins", "Congratulations, you won!", "I'll see you again Next Time!");
@@ -91,6 +95,7 @@ public class MemoryController implements Initializable {
         }
 
       } else {
+        // if the user clicks the wrong button, user has to start again
         Button button = buttons.get(getIndexOfButton(event));
         changeButtonColor(button, "-fx-base: red");
         text.setText("Wrong");
@@ -104,6 +109,7 @@ public class MemoryController implements Initializable {
   }
 
   private void exitSpeech() {
+    // Speech for tts when exit happens
     Task<Void> exitTts =
         new Task<Void>() {
 
@@ -147,6 +153,7 @@ public class MemoryController implements Initializable {
   }
 
   private void showPattern() {
+    // Show the pattern in a certain amount of time
     PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
     pause.setOnFinished(
         e -> {
@@ -174,6 +181,7 @@ public class MemoryController implements Initializable {
   }
 
   private void changeButtonColor(Button button, String color) {
+    // Setting the pause in transition
     button.setStyle(color);
     PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
     pause.setOnFinished(

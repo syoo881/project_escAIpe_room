@@ -35,12 +35,13 @@ public class RoomController {
   @FXML private Label frameSpeech;
 
   @FXML private ImageView normalVase;
-  Image monsterVaseImage = new Image(getClass().getResourceAsStream("/images/monstervase.png"));
-  Image normalVaseImage = new Image(getClass().getResourceAsStream("/images/vase.png"));
+  private Image monsterVaseImage =
+      new Image(getClass().getResourceAsStream("/images/monstervase.png"));
+  private Image normalVaseImage = new Image(getClass().getResourceAsStream("/images/vase.png"));
 
   @FXML private ImageView monsterBed;
-  Image monsterBedImage = new Image(getClass().getResourceAsStream("/images/eyes.png"));
-  Image normalBedImage = new Image(getClass().getResourceAsStream("/images/empty.png"));
+  private Image monsterBedImage = new Image(getClass().getResourceAsStream("/images/eyes.png"));
+  private Image normalBedImage = new Image(getClass().getResourceAsStream("/images/empty.png"));
 
   @FXML private Label timerLabel;
   private int remainingSeconds = COUNTDOWN_SECONDS;
@@ -48,17 +49,12 @@ public class RoomController {
   private ChatCompletionRequest chatCompletionRequest;
   private Timeline promptUpdateTimeline;
   private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-  TextToSpeech frameSpeechTts = new TextToSpeech();
-  TextToSpeech ggTts = new TextToSpeech();
+  private TextToSpeech frameSpeechTts = new TextToSpeech();
+  private TextToSpeech ggTts = new TextToSpeech();
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
-    // Initialization code goes here
-
-    // UiUtils.showDialog(
-    //     "Welcome!",
-    //     "This is my home! I have to find my friends!",
-    //     "I'm not letting you leave unless you find all my friends!");
+    // Initialise to use the startTimer, start promptupdate and the introduction tts.
     startTimer();
     startPromptUpdate();
     introduceTts();
@@ -78,6 +74,7 @@ public class RoomController {
   }
 
   private void introduceTts() {
+    // The introduction tts
     Task<Void> frameTts =
         new Task<Void>() {
 
@@ -133,6 +130,8 @@ public class RoomController {
                         + " a time.";
 
                 // Request GPT API for completion
+                // There are multiple prompts the GPT API can use, depending on what the user has
+                // done regarding the game
 
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               } else if (GameState.isBedRiddleResolved && !GameState.isMonsterVaseResolved) {
@@ -187,12 +186,14 @@ public class RoomController {
   }
 
   private void startTimer() {
+    // Start the timer, using a countdown thread
     Thread countdownThread =
         new Thread(
             () -> {
               while (remainingSeconds > 0) {
                 Platform.runLater(() -> timerLabel.setText(formatTime(remainingSeconds)));
                 try {
+                  // Sleep 1000 millis to count 1 second
                   Thread.sleep(1000);
                 } catch (InterruptedException e) {
                   e.printStackTrace();
@@ -201,6 +202,7 @@ public class RoomController {
               }
               Platform.runLater(
                   () -> {
+                    // When the timer is done, set the value to null, stop the timer
                     timerLabel.setText("XX:XX");
                     promptUpdateTimeline.stop();
                     App.showGameOverDialog(); // Call the method to display game over dialog
@@ -214,6 +216,7 @@ public class RoomController {
   }
 
   private void gameOverTts() {
+    // Game over TTS
     Task<Void> gameOverTask =
         new Task<Void>() {
 
@@ -259,6 +262,7 @@ public class RoomController {
   @FXML
   public void clickMonsterVase(MouseEvent event) throws IOException, ApiProxyException {
 
+    // clicking monster vase - if the vase game is resolved, no need to play the game again
     if (!GameState.isMonsterVaseResolved) {
 
       UiUtils.showDialog(
@@ -275,6 +279,7 @@ public class RoomController {
   @FXML
   public void clickBed(MouseEvent event) throws IOException {
 
+    // if the bed riddle is not resolved, play the game
     if (!GameState.isBedRiddleResolved) {
       UiUtils.showDialog("???", "MEOW!", "IM NOT SHOWING UNTIL YOU ANSWER RIGHT!");
       App.setScene(AppUi.CHAT);
@@ -288,11 +293,15 @@ public class RoomController {
   @FXML
   public void clickMonsterFrame(MouseEvent event) throws IOException {
 
+    // if both games are resolved, show the dialog to exit
+    // You can only exit if both games are resolved
+
     if ((GameState.isMonsterVaseResolved) && GameState.isBedRiddleResolved) {
       UiUtils.showDialog(
           "???",
           "You found my Friends! Now you'll have to beat me to leave my house!",
           "I can memorize 3 friends. Can you memorize more than that?");
+      // Set to the memory.fxml file to start the memory game
       App.setScene(AppUi.MEMORY);
       UiUtils.showDialog(
           "Rules",

@@ -36,6 +36,7 @@ public class VaseGameController {
 
   @FXML
   private void playerTurn(ActionEvent event) {
+    //In the players turn, they can choose one of the options and it sets the playerChoice String.
     String playerChoice = null;
     switch (((Button) event.getSource()).getId()) {
       case "paperButton":
@@ -53,10 +54,11 @@ public class VaseGameController {
     }
     player.setImage(image);
 
-    winner(playerChoice, computerTurn());
+    chooseWinner(playerChoice, computerTurn());
   }
 
   @FXML
+  //Setting the random number so the computer chooses randomly
   private String computerTurn() {
     String computerChoice = null;
     int index = (int) (Math.random() * 3);
@@ -78,7 +80,8 @@ public class VaseGameController {
     return computerChoice;
   }
 
-  public void PlayerWin() {
+  public void playerWin() {
+    //Setting the condition for when the player wins
     result.setText("You Win");
     userScore.setText(String.valueOf(Integer.parseInt(userScore.getText()) + 1));
     if (Integer.parseInt(userScore.getText()) == 1) {
@@ -92,6 +95,7 @@ public class VaseGameController {
   }
 
   public void computerWin() {
+    //Setting the condition for when the computer wins
     result.setText("You Lose");
     cadeScore.setText(String.valueOf(Integer.parseInt(cadeScore.getText()) + 1));
     if (Integer.parseInt(cadeScore.getText()) == 1) {
@@ -106,15 +110,16 @@ public class VaseGameController {
     result.setText("Draw");
   }
 
-  private void winner(String playerChoice, String computerChoice) {
+  private void chooseWinner(String playerChoice, String computerChoice) {
+    //Choose winner of the game
     if (playerChoice.equals(computerChoice)) {
       draw();
     } else if (playerChoice.equals(PAPER) && computerChoice.equals(ROCK)) {
-      PlayerWin();
+      playerWin();
     } else if (playerChoice.equals(ROCK) && computerChoice.equals(SCISSORS)) {
-      PlayerWin();
+      playerWin();
     } else if (playerChoice.equals(SCISSORS) && computerChoice.equals(PAPER)) {
-      PlayerWin();
+      playerWin();
     } else {
       computerWin();
     }
