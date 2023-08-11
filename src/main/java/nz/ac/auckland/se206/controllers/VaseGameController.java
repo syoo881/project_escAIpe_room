@@ -35,10 +35,10 @@ public class VaseGameController {
   @FXML private Label userScore;
 
   @FXML
-  private void playerTurn(ActionEvent event) {
-    //In the players turn, they can choose one of the options and it sets the playerChoice String.
+  private void playerTurn(ActionEvent handlingPlayer) {
+    // In the players turn, they can choose one of the options and it sets the playerChoice String.
     String playerChoice = null;
-    switch (((Button) event.getSource()).getId()) {
+    switch (((Button) handlingPlayer.getSource()).getId()) {
       case "paperButton":
         image = new Image(getClass().getResourceAsStream("/images/paper.png"));
         playerChoice = PAPER;
@@ -58,7 +58,7 @@ public class VaseGameController {
   }
 
   @FXML
-  //Setting the random number so the computer chooses randomly
+  // Setting the random number so the computer chooses randomly
   private String computerTurn() {
     String computerChoice = null;
     int index = (int) (Math.random() * 3);
@@ -81,24 +81,24 @@ public class VaseGameController {
   }
 
   public void playerWin() {
-    //Setting the condition for when the player wins
+    // Setting the condition for when the player wins
     result.setText("You Win");
     userScore.setText(String.valueOf(Integer.parseInt(userScore.getText()) + 1));
-    if (Integer.parseInt(userScore.getText()) == 1) {
+    if (Integer.parseInt(userScore.getText()) == 2) {
       result.setText("You Win the Game");
       userScore.setText("0");
       cadeScore.setText("0");
       GameState.isMonsterVaseResolved = true;
-      UiUtils.showDialog("WOW!", "Awww man!", "You won! My name is Vanessa");
+      UiUtils.showDialog("WOW!", "You won...", "Why are you so mean to Vanessa");
       App.setScene(AppUi.ROOM);
     }
   }
 
   public void computerWin() {
-    //Setting the condition for when the computer wins
+    // Setting the condition for when the computer wins
     result.setText("You Lose");
     cadeScore.setText(String.valueOf(Integer.parseInt(cadeScore.getText()) + 1));
-    if (Integer.parseInt(cadeScore.getText()) == 1) {
+    if (Integer.parseInt(cadeScore.getText()) == 2) {
       result.setText("You Lose the Game");
       UiUtils.showDialog("Haha!", "You suck at this game!", "Cmon GO again!");
       userScore.setText("0");
@@ -111,7 +111,7 @@ public class VaseGameController {
   }
 
   private void chooseWinner(String playerChoice, String computerChoice) {
-    //Choose winner of the game
+    // Choose winner of the game
     if (playerChoice.equals(computerChoice)) {
       draw();
     } else if (playerChoice.equals(PAPER) && computerChoice.equals(ROCK)) {

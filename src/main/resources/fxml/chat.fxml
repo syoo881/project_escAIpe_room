@@ -5,9 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-  xmlns="http://javafx.com/javafx/18"
-  xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ChatController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ChatController">
   <children>
     <TextArea fx:id="chatTextArea" layoutX="35.0" layoutY="26.0" prefHeight="299.0" prefWidth="538.0" wrapText="true" />
     <TextField fx:id="inputText" layoutX="35.0" layoutY="341.0" prefHeight="26.0" prefWidth="435.0" />

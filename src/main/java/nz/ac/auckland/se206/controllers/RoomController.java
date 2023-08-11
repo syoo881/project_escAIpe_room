@@ -33,24 +33,25 @@ public class RoomController {
   @FXML private Rectangle window;
   @FXML private Rectangle vase;
   @FXML private Label frameSpeech;
-
   @FXML private ImageView normalVase;
-  private Image monsterVaseImage =
-      new Image(getClass().getResourceAsStream("/images/monstervase.png"));
-  private Image normalVaseImage = new Image(getClass().getResourceAsStream("/images/vase.png"));
-
   @FXML private ImageView monsterBed;
-  private Image monsterBedImage = new Image(getClass().getResourceAsStream("/images/eyes.png"));
-  private Image normalBedImage = new Image(getClass().getResourceAsStream("/images/empty.png"));
-
   @FXML private Label timerLabel;
+
   private int remainingSeconds = COUNTDOWN_SECONDS;
   private static final int COUNTDOWN_SECONDS = 120;
   private ChatCompletionRequest chatCompletionRequest;
   private Timeline promptUpdateTimeline;
   private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
   private TextToSpeech frameSpeechTts = new TextToSpeech();
   private TextToSpeech ggTts = new TextToSpeech();
+
+  private Image monsterVaseImage =
+      new Image(getClass().getResourceAsStream("/images/monstervase.png"));
+  private Image normalVaseImage = new Image(getClass().getResourceAsStream("/images/vase.png"));
+
+  private Image monsterBedImage = new Image(getClass().getResourceAsStream("/images/eyes.png"));
+  private Image normalBedImage = new Image(getClass().getResourceAsStream("/images/empty.png"));
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -125,7 +126,7 @@ public class RoomController {
                     "You are a black blob on a frame. You have two close friends hiding in this"
                         + " room. They are a vase, Vanessa and hidden under a bed, called Cade."
                         + " Give one sentence hints about Vanessa and Cade without using the word"
-                        + " vase and bed. The sentences are at most 7 words long. . Also talk about"
+                        + " vase and bed. The sentences are at most 7 words long. Also talk about"
                         + " your two hidden friends as well. Also, only print out one sentences at"
                         + " a time.";
 
@@ -158,8 +159,8 @@ public class RoomController {
                     "Note: Only answer with one sentence. The sentences are at most 7 words long."
                         + " Since both games are solved, First congratulate the user with one"
                         + " sentence for finding both friends and solving the games. Then, tell"
-                        + " them that they have one last task to do, which is to find"
-                        + " someone/something. Also, only print out one sentence at a time.";
+                        + " them that they have one last task to do, which is related to himself."
+                        + " Also, only print out one sentence at a time.";
                 chatCompletionRequest.addMessage(new ChatMessage("user", prompt));
               }
 
@@ -268,8 +269,7 @@ public class RoomController {
       UiUtils.showDialog(
           "???",
           "Hey! Don't touch me I'm not gonna come out!",
-          " To do that you're gonna have to beat"
-              + " me in Rock, Paper, Scissors! First to three!");
+          "To do that you're gonna have to beat" + " me in Rock, Paper, Scissors! First to two!");
       App.setScene(AppUi.RCS);
     } else if (GameState.isMonsterVaseResolved) {
       UiUtils.showDialog("Vanessa", ":( You Meanie!", "Go away!");
@@ -300,7 +300,7 @@ public class RoomController {
       UiUtils.showDialog(
           "???",
           "You found my Friends! Now you'll have to beat me to leave my house!",
-          "I can memorize 3 friends. Can you memorize more than that?");
+          "I can memorize 3 things at once. Can you memorize more than that?");
       // Set to the memory.fxml file to start the memory game
       App.setScene(AppUi.MEMORY);
       UiUtils.showDialog(
@@ -308,8 +308,12 @@ public class RoomController {
           "Press Start to start Simon (Muffin) Says!",
           "Wait until the grey blocks light up then click them in order. They increase in number"
               + " every round. Get 4 to win!");
-    } else {
-      UiUtils.showDialog("...", "You're not done yet!", "Go find my friends!");
+    } else if (!(GameState.isMonsterVaseResolved) && !(GameState.isBedRiddleResolved)) {
+      UiUtils.showDialog("...", "You haven't found both of them yet!", "Go find my friends!");
+    } else if (!(GameState.isMonsterVaseResolved) && (GameState.isBedRiddleResolved)) {
+      UiUtils.showDialog("...", "You haven't found Vanessa yet!", "Go find her!");
+    } else if (!(GameState.isBedRiddleResolved) && (GameState.isMonsterVaseResolved)) {
+      UiUtils.showDialog("...", "You haven't found Cade yet!", "Go find him!");
     }
   }
 }

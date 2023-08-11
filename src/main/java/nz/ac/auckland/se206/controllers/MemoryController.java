@@ -72,7 +72,7 @@ public class MemoryController implements Initializable {
   }
 
   @FXML
-  void buttonClicked(ActionEvent event) {
+  public void buttonClick(ActionEvent handlingButton) {
 
     if (isStarted = false) {
       UiUtils.showDialog("???", "Cmon!", "Press Start to begin!");
@@ -80,9 +80,9 @@ public class MemoryController implements Initializable {
 
       // When the button is clicked, we use the getIndexOfButton method to get the index of the
       // button
-      if (((Control) event.getSource()).getId().equals(pattern.get(counter))) {
+      if (((Control) handlingButton.getSource()).getId().equals(pattern.get(counter))) {
         text.setText("Correct " + counter);
-        Button button = buttons.get(getIndexOfButton(event));
+        Button button = buttons.get(getIndexOfButton(handlingButton));
         changeButtonColor(button, "-fx-base: lightgreen");
         counter++;
         // if the counter is equal to 4, the game is over and the user has won
@@ -96,7 +96,7 @@ public class MemoryController implements Initializable {
 
       } else {
         // if the user clicks the wrong button, user has to start again
-        Button button = buttons.get(getIndexOfButton(event));
+        Button button = buttons.get(getIndexOfButton(handlingButton));
         changeButtonColor(button, "-fx-base: red");
         text.setText("Wrong");
         return;
@@ -124,7 +124,7 @@ public class MemoryController implements Initializable {
   }
 
   @FXML
-  void start(ActionEvent event) {
+  public void start(ActionEvent handlingStart) {
     isStarted = true;
     pattern.clear();
 
