@@ -40,6 +40,7 @@ public class RoomController {
 
   private TextToSpeech frameSpeechTts = new TextToSpeech();
   private TextToSpeech ggTts = new TextToSpeech();
+  private TextToSpeech exitTts = new TextToSpeech();
 
   private Image monsterVaseImage =
       new Image(getClass().getResourceAsStream("/images/monstervase.png"));
@@ -82,6 +83,21 @@ public class RoomController {
         };
     Thread frameTtsThread = new Thread(frameTts);
     frameTtsThread.start();
+  }
+
+  private void exitSpeakTts() {
+    // The introduction tts
+    Task<Void> exitTtsTask =
+        new Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            exitTts.speak("This is the final Game! Finish this and you get to leave!");
+            return null;
+          }
+        };
+    Thread exitTtsThread = new Thread(exitTtsTask);
+    exitTtsThread.start();
   }
 
   private void stopBackgroundTasks() {
@@ -298,6 +314,7 @@ public class RoomController {
           "I can memorize 3 things at once. Can you memorize more than that?");
       // Set to the memory.fxml file to start the memory game
       App.setScene(AppUi.MEMORY);
+      exitSpeakTts();
       UiUtils.showDialog(
           "Rules",
           "Press Start to start Simon (Muffin) Says!",
