@@ -72,7 +72,7 @@ public class MemoryController implements Initializable {
   }
 
   @FXML
-  public void buttonClick(ActionEvent handlingButton) {
+  public void onButtonClick(ActionEvent handlingButton) {
 
     if (isStarted = false) {
       UiUtils.showDialog("???", "Cmon!", "Press Start to begin!");
@@ -124,7 +124,7 @@ public class MemoryController implements Initializable {
   }
 
   @FXML
-  public void start(ActionEvent handlingStart) {
+  public void onStart(ActionEvent handlingStart) {
     isStarted = true;
     pattern.clear();
 

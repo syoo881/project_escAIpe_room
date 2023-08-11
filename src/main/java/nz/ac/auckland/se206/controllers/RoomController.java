@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
@@ -29,16 +28,12 @@ import nz.ac.auckland.se206.speech.TextToSpeech;
 /** Controller class for the room view. */
 public class RoomController {
 
-  @FXML private Rectangle door;
-  @FXML private Rectangle window;
-  @FXML private Rectangle vase;
+  private static final int COUNTDOWN_SECONDS = 120;
   @FXML private Label frameSpeech;
   @FXML private ImageView normalVase;
   @FXML private ImageView monsterBed;
   @FXML private Label timerLabel;
-
   private int remainingSeconds = COUNTDOWN_SECONDS;
-  private static final int COUNTDOWN_SECONDS = 120;
   private ChatCompletionRequest chatCompletionRequest;
   private Timeline promptUpdateTimeline;
   private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
