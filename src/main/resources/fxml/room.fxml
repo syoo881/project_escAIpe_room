@@ -18,7 +18,7 @@
             <Image url="@../images/monsterroom.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="normalVase" fitHeight="111.0" fitWidth="110.0" layoutX="6.0" layoutY="235.0" onMouseClicked="#clickMonsterVase" onMouseEntered="#toMonsterVase" onMouseExited="#resetVase" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="normalVase" fitHeight="111.0" fitWidth="168.0" layoutX="6.0" layoutY="235.0" onMouseClicked="#clickMonsterVase" onMouseEntered="#toMonsterVase" onMouseExited="#resetVase" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/vase.png" />
          </image>
@@ -61,7 +61,7 @@
          </font>
       </TextArea>
       <Label fx:id="frameSpeech" alignment="CENTER" layoutX="50.0" layoutY="51.0" prefHeight="94.0" prefWidth="492.0" text="Help me find my friends, Vanessa and Cade!" textFill="WHITE" />
-      <ImageView fx:id="monsterBed" fitHeight="64.0" fitWidth="101.0" layoutX="157.0" layoutY="377.0" onMouseClicked="#clickBed" onMouseEntered="#toMonsterBed" onMouseExited="#resetBed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="monsterBed" fitHeight="72.0" fitWidth="187.0" layoutX="113.0" layoutY="369.0" onMouseClicked="#clickBed" onMouseEntered="#toMonsterBed" onMouseExited="#resetBed" pickOnBounds="true">
          <image>
             <Image url="@../images/empty.png" />
          </image>

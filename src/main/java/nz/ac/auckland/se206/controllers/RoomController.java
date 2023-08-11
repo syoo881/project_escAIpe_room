@@ -55,6 +55,10 @@ public class RoomController {
   public void initialize() {
     // Initialization code goes here
 
+    // UiUtils.showDialog(
+    //     "Welcome!",
+    //     "This is my home! I have to find my friends!",
+    //     "I'm not letting you leave unless you find all my friends!");
     startTimer();
     startPromptUpdate();
     introduceTts();
@@ -215,7 +219,7 @@ public class RoomController {
 
           @Override
           protected Void call() throws Exception {
-            ggTts.speak("Hello welcome to my home");
+            ggTts.speak("THE GAME IS NOW OVER. YOU DIDN'T EXIT IN TIME");
             return null;
           }
         };
@@ -287,9 +291,14 @@ public class RoomController {
     if ((GameState.isMonsterVaseResolved) && GameState.isBedRiddleResolved) {
       UiUtils.showDialog(
           "???",
-          "You found my Friends! Now you'll have to beat me!",
+          "You found my Friends! Now you'll have to beat me to leave my house!",
           "I can memorize 3 friends. Can you memorize more than that?");
       App.setScene(AppUi.MEMORY);
+      UiUtils.showDialog(
+          "Rules",
+          "Press Start to start Simon (Muffin) Says!",
+          "Wait until the grey blocks light up then click them in order. They increase in number"
+              + " every round. Get 4 to win!");
     } else {
       UiUtils.showDialog("...", "You're not done yet!", "Go find my friends!");
     }
