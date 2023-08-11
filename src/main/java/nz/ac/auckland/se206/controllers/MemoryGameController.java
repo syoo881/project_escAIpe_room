@@ -71,7 +71,7 @@ public class MemoryGameController implements Initializable {
   }
 
   @FXML
-  public void handleButtonClick(ActionEvent event) {
+  private void onClickButton(ActionEvent event) {
     if (!hasStarted) {
       UiUtils.showDialog("Muffin", "Hey there!", "Press Start to begin the game.");
     } else {
@@ -115,7 +115,7 @@ public class MemoryGameController implements Initializable {
   }
 
   @FXML
-  public void handleStart(ActionEvent event) {
+  private void onStart(ActionEvent event) {
     hasStarted = true;
     patternSequence.clear();
 

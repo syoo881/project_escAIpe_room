@@ -35,7 +35,7 @@ public class VaseGameController {
   @FXML private Label userScore;
 
   @FXML
-  public void onPlayerTurn(ActionEvent handlingPlayer) {
+  private void onChoosePlayerTurn(ActionEvent handlingPlayer) {
     // In the players turn, they can choose one of the options and it sets the playerChoice String.
     String playerChoice = null;
     switch (((Button) handlingPlayer.getSource()).getId()) {

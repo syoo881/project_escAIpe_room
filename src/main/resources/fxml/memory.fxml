@@ -13,28 +13,28 @@
             <children>
                 <HBox prefHeight="100.0" prefWidth="300.0">
                     <children>
-                        <Button fx:id="button0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button2" layoutX="235.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button2" layoutX="235.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
                     </children>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="300.0">
                     <children>
-                        <Button fx:id="button3" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button4" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button5" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button3" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button4" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button5" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
                     </children>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="300.0">
                     <children>
-                        <Button fx:id="button6" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button7" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
-                        <Button fx:id="button8" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button6" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button7" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
+                        <Button fx:id="button8" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="100.0" prefWidth="100.0" />
                     </children>
                 </HBox>
             </children>
         </VBox>
-        <Button layoutX="247.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleStart" prefHeight="53.0" prefWidth="109.0" text="Start">
+        <Button layoutX="247.0" layoutY="338.0" mnemonicParsing="false" onAction="#onStart" prefHeight="53.0" prefWidth="109.0" text="Start">
             <font>
                 <Font name="System Bold" size="26.0" />
             </font>
